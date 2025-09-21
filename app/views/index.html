@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grade Analysis - Recap Sheet Wise</title>
+  <script src="//unpkg.com/alpinejs"></script>
+  <script src="app.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .year-link {
+      color: black;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .year-link:hover {
+      text-decoration: underline;
+    }
+    .year-link.active {
+      color: blue;
+      font-weight: bold;
+    }
+    .section {
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+      border-collapse: collapse;
+      padding: 6px 10px;
+    }
+  </style>
+</head>
+<body x-data="App()" x-init="init()">
+  <h1>Grade Analysis - Recap Sheet Wise</h1>
+
+  <div class="section">
+    <h2>Years:</h2>
+    <template x-for="yearObj in years" :key="yearObj.year">
+      <span class="year-link"
+            :class="{ 'active': selectedYear === yearObj.year }"
+            x-text="yearObj.year"
+            @click="selectedYear = yearObj.year; getSemesters(yearObj.year)"
+            ></span>
+    </template>
+  </div>
+
+  <div class="section" x-show="semesters.length > 0">
+    <h2>Semesters:</h2>
+    <template x-for="semesterObj in semesters" :key="semesterObj.semester">
+      <span class="year-link"
+            :class="{ 'active': selectedSemester === semesterObj.semester }"
+            x-text="semesterObj.semester"
+            @click="selectedSemester = semesterObj.semester;getClasses(semesterObj.semester)"
+            ></span>
+    </template>
+  </div>
+
+  <div class="section" x-show="classes.length > 0">
+    <h2>Classes:</h2>
+    <template x-for="classObj in classes" :key="classObj.class">
+      <span class="year-link"
+            :class="{ 'active': selectedClass === classObj.Classes}"
+            @click="selectedClass = classObj.class;getRecapid(classObj.class)"
+            x-text="classObj.class"></span>
+    </template>
+  </div>
+
+  <div class="section" x-show="recapid.length > 0">
+    <h2>Recap ID:</h2>
+    <template x-for="recapidObj in recapid" :key="recapidObj.rid">
+      <span class="year-link"
+            :class="{ 'active': selectedRecapid === recapidObj.rid }"
+            x-text="recapidObj.rid"
+            @click="selectedRecapid = recapidObj.rid;getGradeAnalysis(recapidObj.rid)">
+      </span>
+    </template>
+  </div>
+  
+
+  <div class="section" x-show="grades.length > 0">
+    <h2>Grade Analysis Percentage:</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Grade</th>
+          <th>Student Count</th>
+          <th>Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template x-for="grade in grades" :key="grade.grade">
+          <tr>
+            <td x-text="grade.grade"></td>
+            <td x-text="grade.student_count"></td>
+            <td x-text="grade.percentage + '%' "></td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
